@@ -19,4 +19,4 @@ app.use('/img',img)
 //listen
 app.listen(port,()=>{
   console.log(port)
-})
+}) 
