@@ -10,6 +10,9 @@ const img=mongoose.Schema({
   },username:{
     type:String,
     required:true
+  },pathName:{
+    type:String,
+    required:true
   }
 })
 

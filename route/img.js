@@ -9,7 +9,7 @@ app.post('/post',async(req,res)=>{
   let token=jwt.verify(req.body.token,'bsdk')
   try {
   let userV=await user.findOne({_id:token._id})
-  let ress=await img.create({userId:userV._id,username:userV.username,imgUri:req.body.uri})
+  let ress=await img.create({userId:userV._id,username:userV.username,imgUri:req.body.uri,pathName:req.body.pathName})
   res.status(200).send(ress)
   } catch (e) {
     res.status(500).send({msg:e})
@@ -56,5 +56,15 @@ app.get('/find/:id',async(req,res)=>{
     console.log(e)
   }
 })
-
+//delete an img
+app.delete('/delete/:id',async(req,res)=>{
+  console.log(req.body.id)
+  try {
+ let rez=await img.findByIdAndDelete(req.params.id)
+ res.status(200).send({msg:'deleted'})
+ console.log(rez)
+  } catch (e) {
+    res.status(500).send({msg:'somethin is wrong'})
+  }
+})
 export default app
