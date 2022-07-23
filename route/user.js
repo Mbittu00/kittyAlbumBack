@@ -1,5 +1,6 @@
 import express from'express'
 import user from'../model/user.js'
+import img from'../model/img.js'
 import jwt from'jsonwebtoken'
 const app=express.Router()
 
@@ -52,6 +53,54 @@ app.post('/verify',async(req,res)=>{
   let token=jwt.verify(req.body.token,'bsdk')
 let ress=await user.findOne({_id:token._id}).select('-password')
 res.status(200).send(ress)
+  } catch (e) {
+    res.status(500).send({msg:e})
+    console.log(e)
+  }
+})
+//get an user by id
+app.get('/an/:id',async(req,res)=>{
+  try {
+  let rez=await user.findOne({_id:req.params.id}).select('-password')
+  res.status(200).send(rez)
+  } catch (e) {
+    res.status(500).send({e})
+    console.log(e)
+  }
+})
+//like unlike an img
+app.put('/like',async(req,res)=>{
+  try {
+    let rez=await user.findOne({_id:req.body._id})
+    console.log(rez)
+   if (rez.fav.includes(req.body.like)) {
+   let unlike=await user.findOneAndUpdate({_id:rez._id},{
+     $pull:{fav:req.body.like}
+   },{new:true}).select('-password')
+   res.status(200).send(unlike)
+   }else{
+  let like=await user.findOneAndUpdate({_id:rez.id},
+  {
+    $push:{fav:req.body.like}
+  },{new:true}).select('-password')
+  res.status(200).send(like)
+   }
+  } catch (e) {
+    res.status(500).send({msg:e})
+    console.log(e)
+  }
+})
+//get all like photos
+app.post('/get/like',async(req,res)=>{
+  try {
+    let rez=await user.findOne({_id:req.body._id})
+    console.log(rez)
+    let gepp=await Promise.all(
+    rez.fav.map(async(e)=>{
+  return await img.findOne({_id:e}) 
+      })
+      )
+      res.status(200).send(gepp)
   } catch (e) {
     res.status(500).send({msg:e})
     console.log(e)

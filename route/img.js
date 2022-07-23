@@ -40,10 +40,11 @@ res.status(200).send(ress)
 //get an user img
 app.get('/user/:userId',async(req,res)=>{
   try {
-let res=await img.find({userId:req.params.userId})
-res.status(200).send(res)
+let rez=await img.find({userId:req.params.userId})
+res.status(200).send(rez)
   } catch (e) {
     res.status(500).send({msg:e})
+    console.log(e)
   }
 })
 //get an img

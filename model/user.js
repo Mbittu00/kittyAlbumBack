@@ -11,6 +11,9 @@ const user=mongoose.Schema({
   },fav:{
     type:Array,
     default:[]
+  },imgUri:{
+    type:String,
+    default:''
   }
 })
 
