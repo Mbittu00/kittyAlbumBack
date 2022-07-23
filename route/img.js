@@ -65,7 +65,7 @@ app.delete('/delete/:id',async(req,res)=>{
  let us=await user.find({})
  
  await Promise.all(
-   user.map((e)=>{
+   user.map(async(e)=>{
      await user.findByIdAndUpdate({_id:e._id},{
        $pull:{fav:req.params.id}
      })
