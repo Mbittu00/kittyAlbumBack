@@ -62,6 +62,15 @@ app.delete('/delete/:id',async(req,res)=>{
   console.log(req.body.id)
   try {
  let rez=await img.findByIdAndDelete(req.params.id)
+ let us=await user.find({})
+ 
+ await Promise.all(
+   user.map((e)=>{
+     await user.findByIdAndUpdate({_id:e._id},{
+       $pull:{fav:req.params.id}
+     })
+   })
+   )
  res.status(200).send({msg:'deleted'})
  console.log(rez)
   } catch (e) {
