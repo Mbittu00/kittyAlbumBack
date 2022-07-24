@@ -14,6 +14,9 @@ const user=mongoose.Schema({
   },imgUri:{
     type:String,
     default:''
+  },imgPath:{
+    type:String,
+    default:''
   }
 })
 

@@ -106,4 +106,17 @@ app.post('/get/like',async(req,res)=>{
     console.log(e)
   }
 })
+//set user profile
+app.post('/profile/img',async(req,res)=>{
+  try {
+  let rez=await user.findOneAndUpdate({_id:req.body._id},{
+    imgUri:req.body.imgUri,
+    imgPath:req.body.imgPath
+  },{new:true}).select('-password')
+ res.status(200).send(rez) 
+  } catch (e) {
+    res.status(500).send(e)
+    console.log(e)
+  }
+})
 export default app

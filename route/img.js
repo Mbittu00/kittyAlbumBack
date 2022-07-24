@@ -59,20 +59,20 @@ app.get('/find/:id',async(req,res)=>{
 })
 //delete an img
 app.delete('/delete/:id',async(req,res)=>{
-  console.log(req.body.id)
+  //console.log(req.body.id)
   try {
  let rez=await img.findByIdAndDelete(req.params.id)
  let us=await user.find({})
  
- await Promise.all(
-   user.map(async(e)=>{
-     await user.findByIdAndUpdate({_id:e._id},{
-       $pull:{fav:req.params.id}
-     })
+let pop= await Promise.all(
+   us.map(async(e)=>{
+return await user.findOneAndUpdate({_id:e._id},{
+  $pull:{fav:req.params.id}
+},{new:true})
    })
    )
  res.status(200).send({msg:'deleted'})
- console.log(rez)
+ console.log(pop)
   } catch (e) {
     res.status(500).send({msg:'somethin is wrong'})
   }
