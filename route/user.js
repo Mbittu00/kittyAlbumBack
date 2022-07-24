@@ -93,11 +93,11 @@ app.put('/like',async(req,res)=>{
 //get all like photos
 app.post('/get/like',async(req,res)=>{
   try {
-    let rez=await user.findOne({_id:req.body._id})
+    let rez=await user.findOne({_id:req.body._id}).
     console.log(rez)
     let gepp=await Promise.all(
     rez.fav.map(async(e)=>{
-  return await img.findOne({_id:e}) 
+  return await img.findOne({_id:e}).sort({createdAt: -1})
       })
       )
       res.status(200).send(gepp)

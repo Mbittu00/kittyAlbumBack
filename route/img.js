@@ -24,7 +24,7 @@ let token=jwt.verify(req.body.token,'bsdk')
 let userV=await user.findOne({_id:token._id})
 if (user) {
     try {
-let ress=await img.find({})
+let ress=await img.find({}).sort({createdAt: -1})
 res.status(200).send(ress)
   } catch (e) {
     res.status(500).send({msg:e})
@@ -40,7 +40,7 @@ res.status(200).send(ress)
 //get an user img
 app.get('/user/:userId',async(req,res)=>{
   try {
-let rez=await img.find({userId:req.params.userId})
+let rez=await img.find({userId:req.params.userId}).sort({createdAt: -1})
 res.status(200).send(rez)
   } catch (e) {
     res.status(500).send({msg:e})
